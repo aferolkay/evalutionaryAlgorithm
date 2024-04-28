@@ -31,8 +31,6 @@ image_width   = image.shape[1]
 
 radius_limit  = 100
 
-generated_image = np.zeros((image_height, image_width, 3), np.uint8)
-
 class Gene:
     def __init__(self, RADIUS, X_COORD, Y_COORD, RED, GREEN, BLUE, ALPHA):
         self.RADIUS = RADIUS
@@ -61,7 +59,7 @@ class Individual:
         generated_image = np.zeros((image_height, image_width, 3), np.uint8)
         for gene in self.chromosome:
             generated_image_copy = generated_image.copy()
-            cv2.circle(generated_image_copy, (gene.X_COORD, gene.Y_COORD), gene.RADIUS, (gene.RED, gene.GREEN, gene.BLUE), -1)
+            cv2.circle(generated_image_copy, (gene.X_COORD, gene.Y_COORD), gene.RADIUS, (gene.BLUE, gene.GREEN, gene.RED), -1)
             cv2.addWeighted(generated_image, gene.ALPHA, generated_image_copy, 1 - gene.ALPHA, 0, generated_image)
         cv2.imshow('Generated Image', generated_image)
         cv2.imshow('Original Image', image)
@@ -70,91 +68,75 @@ class Individual:
     def mutateInd(self):
         
         if random.random() < mutation_prob:
-            geneIndex = random.randint(0, self.num_genes - 1)
-            if mutation_type == 0:
-                match geneIndex:
-                    case 0:
-                        self.chromosome[geneIndex].RADIUS = random.randint(1, radius_limit)
-                    case 1:
-                        self.chromosome[geneIndex].X_COORD = random.randint(0, image_width)
-                    case 2:
-                        self.chromosome[geneIndex].Y_COORD = random.randint(0, image_height)
-                    case 3:
-                        self.chromosome[geneIndex].RED = random.randint(0, 255)
-                    case 4:
-                        self.chromosome[geneIndex].GREEN = random.randint(0, 255)
-                    case 5:
-                        self.chromosome[geneIndex].BLUE = random.randint(0, 255)
-                    case 6:
-                        self.chromosome[geneIndex].ALPHA = random.random()
+            geneIndex = random.randint(0, num_genes - 1)
+            if mutation_type == 0:            
+                self.chromosome[geneIndex].RADIUS = random.randint(1, radius_limit)                 
+                self.chromosome[geneIndex].X_COORD = random.randint(0, image_width)          
+                self.chromosome[geneIndex].Y_COORD = random.randint(0, image_height)             
+                self.chromosome[geneIndex].RED = random.randint(0, 255)           
+                self.chromosome[geneIndex].GREEN = random.randint(0, 255)     
+                self.chromosome[geneIndex].BLUE = random.randint(0, 255)
+                self.chromosome[geneIndex].ALPHA = random.random()
 
             elif mutation_type == 1:
                     
-                match random.randint(0, 6):
-                    case 0:
-                        # radius
-                        while True:
-                            new_radius = random.randint(1, radius_limit)
-                            if new_radius < self.chromosome[geneIndex].RADIUS + 10 and  new_radius > self.chromosome[geneIndex].RADIUS - 10:
-                                self.chromosome[geneIndex].RADIUS = new_radius
-                                break
-                            else :
-                                continue
+                # radius
+                while True:
+                    new_radius = random.randint(1, radius_limit)
+                    if new_radius < self.chromosome[geneIndex].RADIUS + 10 and  new_radius > self.chromosome[geneIndex].RADIUS - 10:
+                        self.chromosome[geneIndex].RADIUS = new_radius
+                        break
+                    else :
+                        continue
 
-                    case 1:            
-                        # x-coordinate
-                        while True:
-                            new_x_coord = random.randint(0, image_width)
-                            if new_x_coord < self.chromosome[geneIndex].X_COORD + image_width / 4 and new_x_coord > self.chromosome[geneIndex].X_COORD - image_width / 4:
-                                self.chromosome[geneIndex].X_COORD = new_x_coord
-                                break
-                            else:
-                                continue
-                    case 2:                 
-                        # y-coordinate
-                        while True:
-                            new_y_coord = random.randint(0, image_height)
-                            if new_y_coord < self.chromosome[geneIndex].Y_COORD + image_height / 4 and new_y_coord > self.chromosome[geneIndex].Y_COORD - image_height / 4:
-                                self.chromosome[geneIndex].Y_COORD = new_y_coord
-                                break
-                            else:
-                                continue
-                    case 3:
-                        # red value
-                        while True:
-                            new_red = random.randint(0, 255)
-                            if new_red < self.chromosome[geneIndex].RED + 64 and new_red > self.chromosome[geneIndex].RED - 64:
-                                self.chromosome[geneIndex].RED = new_red
-                                break
-                            else:
-                                continue
-                    case 4:
-                        # green value
-                        while True:
-                            new_green = random.randint(0, 255)
-                            if new_green < self.chromosome[geneIndex].GREEN + 64 and new_green > self.chromosome[geneIndex].GREEN - 64:
-                                self.chromosome[geneIndex].GREEN = new_green
-                                break
-                            else:
-                                continue     
-                    case 5:
-                        # blue value
-                        while True:
-                            new_blue = random.randint(0, 255)
-                            if new_blue < self.chromosome[geneIndex].BLUE + 64 and new_blue > self.chromosome[geneIndex].BLUE - 64:
-                                self.chromosome[geneIndex].BLUE = new_blue
-                                break
-                            else:
-                                continue
-                    case 6: 
-                        # alpha value 
-                        while True:
-                            new_alpha = random.random()
-                            if new_alpha < self.chromosome[geneIndex].ALPHA + 0.25 and new_alpha > self.chromosome[geneIndex].ALPHA - 0.25:
-                                self.chromosome[geneIndex].ALPHA = new_alpha
-                                break
-                            else:
-                                continue            
+                # x-coordinate
+                while True:
+                    new_x_coord = random.randint(0, image_width)
+                    if new_x_coord < self.chromosome[geneIndex].X_COORD + image_width / 4 and new_x_coord > self.chromosome[geneIndex].X_COORD - image_width / 4:
+                        self.chromosome[geneIndex].X_COORD = new_x_coord
+                        break
+                    else:
+                        continue
+                # y-coordinate
+                while True:
+                    new_y_coord = random.randint(0, image_height)
+                    if new_y_coord < self.chromosome[geneIndex].Y_COORD + image_height / 4 and new_y_coord > self.chromosome[geneIndex].Y_COORD - image_height / 4:
+                        self.chromosome[geneIndex].Y_COORD = new_y_coord
+                        break
+                    else:
+                        continue
+                # red value
+                while True:
+                    new_red = random.randint(0, 255)
+                    if new_red < self.chromosome[geneIndex].RED + 64 and new_red > self.chromosome[geneIndex].RED - 64:
+                        self.chromosome[geneIndex].RED = new_red
+                        break
+                    else:
+                        continue
+                # green value
+                while True:
+                    new_green = random.randint(0, 255)
+                    if new_green < self.chromosome[geneIndex].GREEN + 64 and new_green > self.chromosome[geneIndex].GREEN - 64:
+                        self.chromosome[geneIndex].GREEN = new_green
+                        break
+                    else:
+                        continue     
+                # blue value
+                while True:
+                    new_blue = random.randint(0, 255)
+                    if new_blue < self.chromosome[geneIndex].BLUE + 64 and new_blue > self.chromosome[geneIndex].BLUE - 64:
+                        self.chromosome[geneIndex].BLUE = new_blue
+                        break
+                    else:
+                        continue
+                # alpha value 
+                while True:
+                    new_alpha = random.random()
+                    if new_alpha < self.chromosome[geneIndex].ALPHA + 0.25 and new_alpha > self.chromosome[geneIndex].ALPHA - 0.25:
+                        self.chromosome[geneIndex].ALPHA = new_alpha
+                        break
+                    else:
+                        continue            
             else:
                 print("Invalid mutation type")
                 return
@@ -211,29 +193,29 @@ class Population:
             self.population[numOfElite + i].mutateInd()
 
     def select_individuals(self, frac_elite, tm_size):
-        elites = self.population[:int(frac_elite * num_inds)]
-        non_elites = self.population[int(frac_elite * num_inds):]
+        elites = self.population[:int(frac_elite * num_inds)].copy()
+        non_elites = self.population[int(frac_elite * num_inds):].copy()
 
         assert len(elites) + len(non_elites) == len(self.population)
 
         self.population = elites
+        assert len(self.population) == len(elites)
 
         while population.getNumOfIndividuals() < num_inds:
             tournament = []
             for i in range(tm_size): 
-                tournament.append(random.choice(non_elites))
+                tournament.append(copy.deepcopy(random.choice(non_elites)))
             self.population.append(tournament_selection(tournament))
 
 
 
 def evaluate_individual(individual):
-    generated_image = np.zeros((image_height, image_width, 3), np.uint8)
+    generated_image = np.full((image_height, image_width, 3), 255, np.uint8)
     for gene in individual.chromosome:
         generated_image_copy = generated_image.copy()
-        cv2.circle(generated_image_copy, (gene.X_COORD, gene.Y_COORD), gene.RADIUS, (gene.RED, gene.GREEN, gene.BLUE), -1)
+        cv2.circle(generated_image_copy, (gene.X_COORD, gene.Y_COORD), gene.RADIUS, (gene.BLUE, gene.GREEN, gene.RED), -1)
         cv2.addWeighted(generated_image, gene.ALPHA, generated_image_copy, 1 - gene.ALPHA, 0, generated_image)
     
-    error_of_individual = np.zeros((image_height, image_width, 3), np.int16)
     error_of_individual = np.subtract(image, generated_image)
     np.abs(error_of_individual, out=error_of_individual)
         
@@ -251,10 +233,6 @@ def evaluate_individuals(population):
 def tournament_selection(tournament):
     tournament.sort(key = lambda x: evaluate_individual(x), reverse = True)
     return tournament[0]
-
-      
-
-    
 
 def crossover(individual1, individual2):
     parent1 = copy.deepcopy(individual1)
@@ -308,7 +286,8 @@ for i in range(num_generations):
     fittest_individual = population.getFittest()
     fittest_individual.showImage()
     print("Generation: ", i , " Fittest individual fitness: ", evaluate_individual(population.getFittest()))
-    # print("*")
+
+print("Program finished with best fitness: ", evaluate_individual(population.getFittest()))
     
 
 
