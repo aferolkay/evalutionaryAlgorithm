@@ -65,89 +65,89 @@ class Individual:
     
     def mutate(self):
         for geneIndex in range(len(self.chromosome)):
-            if mutation_type == 0:
-                if random.random() < mutation_prob:
+            if random.random() < mutation_prob:
+                if mutation_type == 0:
                     self.chromosome[geneIndex] = Gene(random.randint(1, 50), 
-                                                      random.randint(0, image_width), 
-                                                      random.randint(0, image_height), 
-                                                      random.randint(0, 255), 
-                                                      random.randint(0, 255), 
-                                                      random.randint(0, 255), 
-                                                      random.random())
-            elif mutation_type == 1:
-                # radius
-                    if (self.chromosome[geneIndex].RADIUS - 10) > 0 :
-                        lower_bound = self.chromosome[geneIndex].RADIUS - 10
-                    else:
-                        lower_bound = 1
-                    self.chromosome[geneIndex].RADIUS = random.randint(lower_bound, 50)
+                                                        random.randint(0, image_width), 
+                                                        random.randint(0, image_height), 
+                                                        random.randint(0, 255), 
+                                                        random.randint(0, 255), 
+                                                        random.randint(0, 255), 
+                                                        random.random())
+                elif mutation_type == 1:
+                    # radius
+                        if (self.chromosome[geneIndex].RADIUS - 10) > 0 :
+                            lower_bound = self.chromosome[geneIndex].RADIUS - 10
+                        else:
+                            lower_bound = 1
+                        self.chromosome[geneIndex].RADIUS = random.randint(lower_bound, 50)
 
 
-                    # x-coordinate
-                    if (self.chromosome[geneIndex].X_COORD - image_width/4) > 0 :
-                        lower_bound = self.chromosome[geneIndex].X_COORD - image_width/4
-                    else:
-                        lower_bound = 0
-                    if (self.chromosome[geneIndex].X_COORD + image_width/4) < image_width :
-                        upper_bound = self.chromosome[geneIndex].X_COORD + image_width/4
-                    else:
-                        upper_bound = image_width
-                    self.chromosome[geneIndex].X_COORD = random.randint(lower_bound, upper_bound)
+                        # x-coordinate
+                        if (self.chromosome[geneIndex].X_COORD - image_width/4) > 0 :
+                            lower_bound = self.chromosome[geneIndex].X_COORD - image_width/4
+                        else:
+                            lower_bound = 0
+                        if (self.chromosome[geneIndex].X_COORD + image_width/4) < image_width :
+                            upper_bound = self.chromosome[geneIndex].X_COORD + image_width/4
+                        else:
+                            upper_bound = image_width
+                        self.chromosome[geneIndex].X_COORD = random.randint(lower_bound, upper_bound)
 
-                    # y-coordinate
-                    if (self.chromosome[geneIndex].Y_COORD - image_height/4) > 0 :
-                        lower_bound = self.chromosome[geneIndex].Y_COORD - image_height/4
-                    else:    
-                        lower_bound = 0
-                    if (self.chromosome[geneIndex].Y_COORD + image_height/4) < image_height :
-                        upper_bound = self.chromosome[geneIndex].Y_COORD + image_height/4
-                    else:
-                        upper_bound = image_height
-                    self.chromosome[geneIndex].Y_COORD = random.randint(lower_bound, upper_bound)
-                    
-                    # red value
-                    if (self.chromosome[geneIndex].RED - 64) > 0 :
-                        lower_bound = self.chromosome[geneIndex].RED - 64
-                    else:
-                        lower_bound = 0
-                    if (self.chromosome[geneIndex].RED + 64) < 255 :
-                        upper_bound = self.chromosome[geneIndex].RED + 64
-                    else:
-                        upper_bound = 255
-                    self.chromosome[geneIndex].RED = random.randint(lower_bound, upper_bound)
+                        # y-coordinate
+                        if (self.chromosome[geneIndex].Y_COORD - image_height/4) > 0 :
+                            lower_bound = self.chromosome[geneIndex].Y_COORD - image_height/4
+                        else:    
+                            lower_bound = 0
+                        if (self.chromosome[geneIndex].Y_COORD + image_height/4) < image_height :
+                            upper_bound = self.chromosome[geneIndex].Y_COORD + image_height/4
+                        else:
+                            upper_bound = image_height
+                        self.chromosome[geneIndex].Y_COORD = random.randint(lower_bound, upper_bound)
 
-                    # green value
-                    if (self.chromosome[geneIndex].GREEN - 64) > 0 :
-                        lower_bound = self.chromosome[geneIndex].GREEN - 64
-                    else:
-                        lower_bound = 0
-                    if (self.chromosome[geneIndex].GREEN + 64) < 255 :
-                        upper_bound = self.chromosome[geneIndex].GREEN + 64
-                    else:
-                        upper_bound = 255
-                    self.chromosome[geneIndex].GREEN = random.randint(lower_bound, upper_bound)
+                        # red value
+                        if (self.chromosome[geneIndex].RED - 64) > 0 :
+                            lower_bound = self.chromosome[geneIndex].RED - 64
+                        else:
+                            lower_bound = 0
+                        if (self.chromosome[geneIndex].RED + 64) < 255 :
+                            upper_bound = self.chromosome[geneIndex].RED + 64
+                        else:
+                            upper_bound = 255
+                        self.chromosome[geneIndex].RED = random.randint(lower_bound, upper_bound)
 
-                    # blue value
-                    if (self.chromosome[geneIndex].BLUE - 64) > 0 :
-                        lower_bound = self.chromosome[geneIndex].BLUE - 64
-                    else:
-                        lower_bound = 0
-                    if (self.chromosome[geneIndex].BLUE + 64) < 255 :
-                        upper_bound = self.chromosome[geneIndex].BLUE + 64
-                    else:
-                        upper_bound = 255
-                    self.chromosome[geneIndex].BLUE = random.randint(lower_bound, upper_bound)
+                        # green value
+                        if (self.chromosome[geneIndex].GREEN - 64) > 0 :
+                            lower_bound = self.chromosome[geneIndex].GREEN - 64
+                        else:
+                            lower_bound = 0
+                        if (self.chromosome[geneIndex].GREEN + 64) < 255 :
+                            upper_bound = self.chromosome[geneIndex].GREEN + 64
+                        else:
+                            upper_bound = 255
+                        self.chromosome[geneIndex].GREEN = random.randint(lower_bound, upper_bound)
 
-                    # alpha value 
-                    if (self.chromosome[geneIndex].ALPHA - 0.25) > 0 :
-                        lower_bound = self.chromosome[geneIndex].ALPHA - 0.25
-                    else:
-                        lower_bound = 0
-                    if (self.chromosome[geneIndex].ALPHA + 0.25) < 1 :
-                        upper_bound = self.chromosome[geneIndex].ALPHA + 0.25
-                    else:
-                        upper_bound = 1
-                    self.chromosome[geneIndex].ALPHA = random.uniform(lower_bound, upper_bound)
+                        # blue value
+                        if (self.chromosome[geneIndex].BLUE - 64) > 0 :
+                            lower_bound = self.chromosome[geneIndex].BLUE - 64
+                        else:
+                            lower_bound = 0
+                        if (self.chromosome[geneIndex].BLUE + 64) < 255 :
+                            upper_bound = self.chromosome[geneIndex].BLUE + 64
+                        else:
+                            upper_bound = 255
+                        self.chromosome[geneIndex].BLUE = random.randint(lower_bound, upper_bound)
+
+                        # alpha value 
+                        if (self.chromosome[geneIndex].ALPHA - 0.25) > 0 :
+                            lower_bound = self.chromosome[geneIndex].ALPHA - 0.25
+                        else:
+                            lower_bound = 0
+                        if (self.chromosome[geneIndex].ALPHA + 0.25) < 1 :
+                            upper_bound = self.chromosome[geneIndex].ALPHA + 0.25
+                        else:
+                            upper_bound = 1
+                        self.chromosome[geneIndex].ALPHA = random.uniform(lower_bound, upper_bound)
 
             else:
                 print("Invalid mutation type")
@@ -263,7 +263,7 @@ for i in range(num_generations):
     population.mutate()
     fittest_individual = population.getFittest()
     fittest_individual.showImage()
-    print("Generation: ", i)
+    print("Generation: ", i , " Fittest individual fitness: ", evaluate_individual(fittest_individual))
 
 
     
