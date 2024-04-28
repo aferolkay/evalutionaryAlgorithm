@@ -217,8 +217,7 @@ def evaluate_individual(individual):
         cv2.addWeighted(generated_image, gene.ALPHA, generated_image_copy, 1 - gene.ALPHA, 0, generated_image)
     
     error_of_individual = np.subtract(image, generated_image)
-    np.abs(error_of_individual, out=error_of_individual)
-        
+    np.square(error_of_individual, out=error_of_individual)    
     return np.sum(error_of_individual) * -1
 
 
