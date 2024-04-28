@@ -55,6 +55,8 @@ class Individual:
                                         random.randint(0, 255), 
                                         random.randint(0, 255), 
                                         random.random()))
+        assert len(self.chromosome) == num_genes
+
     def showImage(self):
         generated_image = np.zeros((image_height, image_width, 3), np.uint8)
         for gene in self.chromosome:
@@ -157,6 +159,7 @@ class Individual:
                 print("Invalid mutation type")
                 return
         self.chromosome.sort(key = lambda x: x.RADIUS, reverse = True)
+        assert len(self.chromosome) == num_genes
 
 class Population:
     def __init__(self, num_inds, num_genes):
@@ -165,8 +168,18 @@ class Population:
             self.population.append(Individual(num_genes))
     
     def sort(self):
-        self.population.sort(key=evaluate_individual, reverse=True)
-    
+        size_at_start = len(self.population)
+        fitnesses = evaluate_individuals(self.population)
+        # pair each individual with its fitness
+        individual_with_fitness = list(zip(self.population, fitnesses))
+        # sort the list of individuals based on their fitness
+        individual_with_fitness.sort(key = lambda x: x[1], reverse = True)
+        # replace the population with the sorted individuals
+        self.population = [x[0] for x in individual_with_fitness]
+        size_at_end = len(self.population)
+        # make sure the size of the population is the same after multiprocessing evaluations
+        assert size_at_start == size_at_end
+
     def getFittest(self):
         if len(self.population) == 0:
             return None
@@ -179,13 +192,18 @@ class Population:
     def crossover(self):
         numOfParents = int(frac_parents * num_inds)
         numOfElite = int(frac_elite * num_inds)
-        parents = self.population[numOfElite:numOfElite + numOfParents]
+
         for i in range(numOfParents // 2):
-            parent1 = random.choice(parents)
-            parent2 = random.choice(parents)
+            parent1, parent2 = random.sample(self.population[numOfElite:numOfElite + numOfParents], 2)
+            
+            self.population.remove(parent1)
+            self.population.remove(parent2)
             child1, child2 = crossover(parent1, parent2)
+        
             self.population.append(child1)
             self.population.append(child2)
+
+            assert len(self.population) == num_inds
 
     def mutate(self):
         numOfElite = int(frac_elite * num_inds)
@@ -220,7 +238,14 @@ def evaluate_individual(individual):
     np.abs(error_of_individual, out=error_of_individual)
         
     return np.sum(error_of_individual) * -1
-        
+
+
+from multiprocessing import Pool
+def evaluate_individuals(population):
+    with Pool() as pool:
+        fitnesses = pool.map(evaluate_individual, population)
+    return fitnesses
+
 
 
 def tournament_selection(tournament):
